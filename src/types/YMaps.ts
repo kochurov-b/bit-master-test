@@ -12,8 +12,8 @@ export type GetAddressType = {
           get: (
             arg0: number
           ) => {
-            getThoroughfare: () => string | undefined;
-            getPremiseNumber: () => string | undefined;
+            getThoroughfare: () => string;
+            getPremiseNumber: () => string;
           };
         };
       }) => void
