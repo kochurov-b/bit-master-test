@@ -1,5 +1,5 @@
 import { action } from "typesafe-actions";
-import { ECrewsTypes, ICrew } from "../types/crews";
+import { ECrewsTypes, ICrew } from "../../types/store/crews";
 
 export const getCrewsRequest = (coords: [number, number]) =>
   action(ECrewsTypes.GET_CREWS_REQUEST, coords);

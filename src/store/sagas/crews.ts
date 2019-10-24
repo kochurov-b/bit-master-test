@@ -1,7 +1,7 @@
 import { takeLatest, put } from "redux-saga/effects";
 
 import responseCrews from "../../crews.json";
-import { ECrewsTypes } from "../types/crews";
+import { ECrewsTypes } from "../../types/store/crews";
 import { getCrewsSuccess, getCrewsFailure } from "../actions/crews";
 
 function* workerGetCrews() {

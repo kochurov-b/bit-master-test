@@ -1,6 +1,6 @@
 import { Reducer } from "redux";
 
-import { ECrewsTypes, ICrewsState } from "../types/crews";
+import { ECrewsTypes, ICrewsState } from "../../types/store/crews";
 
 export const crews: Reducer<ICrewsState> = (
   state = { loading: false, error: "", data: [] },
