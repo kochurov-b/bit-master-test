@@ -1,13 +1,25 @@
 import React, { useState } from "react";
-import { YMaps, Map, Placemark } from "react-yandex-maps";
+import { YMaps, Map, Placemark, ZoomControl } from "react-yandex-maps";
 
-import { CoordsType, GetCoordsType } from "../../types/YMaps";
+import { CoordsType, GetCoordsType, GetAddressType } from "../../types/YMaps";
 
 export default () => {
   const [coords, setCoords] = useState<CoordsType | []>([]);
 
   const handleGetCoords = (event: GetCoordsType) => {
     setCoords(event.get("coords"));
+  };
+
+  const handleGetAddress = (placeMark: GetAddressType, coords: CoordsType) => {
+    placeMark.geocode(coords).then(result => {
+      const firstGeoObject = result.geoObjects.get(0);
+      console.log(
+        [
+          firstGeoObject.getThoroughfare(),
+          firstGeoObject.getPremiseNumber()
+        ].join(",")
+      );
+    });
   };
 
   return (
@@ -22,7 +34,20 @@ export default () => {
         width={700}
         height={450}
       >
-        <Placemark key={coords.join(",")} geometry={coords} />
+        {coords.length !== 0 && (
+          <Placemark
+            key={coords.join(",")}
+            geometry={coords}
+            properties={{
+              iconCaption: "hello"
+            }}
+            onLoad={(placeMark: GetAddressType) =>
+              handleGetAddress(placeMark, coords)
+            }
+            modules={["geocode"]}
+          />
+        )}
+        <ZoomControl options={{ float: "right" }} />
       </Map>
     </YMaps>
   );
