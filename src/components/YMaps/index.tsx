@@ -1,7 +1,15 @@
-import React from "react";
-import { YMaps, Map } from "react-yandex-maps";
+import React, { useState } from "react";
+import { YMaps, Map, Placemark } from "react-yandex-maps";
+
+import { CoordsType, GetCoordsType } from "../../types/YMaps";
 
 export default () => {
+  const [coords, setCoords] = useState<CoordsType | []>([]);
+
+  const handleGetCoords = (event: GetCoordsType) => {
+    setCoords(event.get("coords"));
+  };
+
   return (
     <YMaps
       query={{
@@ -9,10 +17,13 @@ export default () => {
       }}
     >
       <Map
+        onClick={(event: GetCoordsType) => handleGetCoords(event)}
         defaultState={{ center: [56.84976, 53.20448], zoom: 12 }}
         width={700}
         height={450}
-      />
+      >
+        <Placemark key={coords.join(",")} geometry={coords} />
+      </Map>
     </YMaps>
   );
 };
