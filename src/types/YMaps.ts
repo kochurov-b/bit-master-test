@@ -1,3 +1,5 @@
+import { SET_SELECTED_ADDRESS } from "../store/constants/ymaps";
+
 export type CoordsType = [number, number];
 export type GetCoordsType = { get: (arg0: string) => CoordsType };
 export type GetAddressType = {
@@ -18,3 +20,15 @@ export type GetAddressType = {
     ) => void;
   };
 };
+
+// Store
+export interface IYMapsState {
+  current_address: string;
+}
+
+export interface ISetSelectedAddress {
+  type: SET_SELECTED_ADDRESS;
+  payload: string;
+}
+
+export type YMapsActions = ISetSelectedAddress;
