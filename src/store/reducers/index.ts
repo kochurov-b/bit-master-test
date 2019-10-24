@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import { ymaps } from "./ymaps";
+import { crews } from "./crews";
 
 export default combineReducers({
-  ymaps
+  crews
 });
