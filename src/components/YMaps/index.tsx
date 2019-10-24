@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 import { YMaps, Map, Placemark, ZoomControl } from "react-yandex-maps";
+import { useDispatch, useSelector } from "react-redux";
 
-import { CoordsType, GetCoordsType, GetAddressType } from "../../types/YMaps";
+import { getCrewsRequest } from "../../store/actions/crews";
+import { StoreType } from "../../store";
+import { ICrew } from "../../types/store/crews";
+import { CoordsType, GetCoordsType, GetAddressType } from "../../types/ymaps";
 
 export default () => {
   const [coords, setCoords] = useState<CoordsType | []>([]);
+  const [notFound, setNotFound] = useState<string>("");
+  const crews = useSelector<StoreType, Array<ICrew>>(state => state.crews.data);
+  const dispatch = useDispatch();
 
   const handleGetCoords = (event: GetCoordsType) => {
     setCoords(event.get("coords"));
@@ -13,12 +20,18 @@ export default () => {
   const handleGetAddress = (placeMark: GetAddressType, coords: CoordsType) => {
     placeMark.geocode(coords).then(result => {
       const firstGeoObject = result.geoObjects.get(0);
-      console.log(
-        [
-          firstGeoObject.getThoroughfare(),
-          firstGeoObject.getPremiseNumber()
-        ].join(",")
-      );
+
+      const address: Array<string> = [
+        firstGeoObject.getThoroughfare(),
+        firstGeoObject.getPremiseNumber()
+      ];
+
+      if (typeof address[0] !== "undefined") {
+        dispatch(getCrewsRequest(coords));
+        setNotFound("");
+      } else {
+        setNotFound("Адрес не найден!");
+      }
     });
   };
 
@@ -30,7 +43,7 @@ export default () => {
     >
       <Map
         onClick={(event: GetCoordsType) => handleGetCoords(event)}
-        defaultState={{ center: [56.84976, 53.20448], zoom: 12 }}
+        defaultState={{ center: [56.84976, 53.20448], zoom: 13 }}
         width={700}
         height={450}
       >
@@ -39,7 +52,10 @@ export default () => {
             key={coords.join(",")}
             geometry={coords}
             properties={{
-              iconCaption: "hello"
+              iconCaption: notFound
+            }}
+            options={{
+              iconColor: !notFound ? "#ffbe3e" : "#ff3e3e"
             }}
             onLoad={(placeMark: GetAddressType) =>
               handleGetAddress(placeMark, coords)
@@ -47,6 +63,19 @@ export default () => {
             modules={["geocode"]}
           />
         )}
+
+        {crews.length !== 0 &&
+          !notFound &&
+          crews.map(crew => (
+            <Placemark
+              key={crew.crew_id}
+              geometry={[crew.lat, crew.lon]}
+              options={{
+                preset: "islands#greenStretchyIcon"
+              }}
+            />
+          ))}
+
         <ZoomControl options={{ float: "right" }} />
       </Map>
     </YMaps>
