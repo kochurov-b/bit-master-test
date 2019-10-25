@@ -1,0 +1,19 @@
+.crew {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.crew:hover,
+.crew._selected-crew {
+  background-color: rgb(254, 255, 218);
+}
+
+.crew__title {
+  margin-bottom: 5px;
+}
