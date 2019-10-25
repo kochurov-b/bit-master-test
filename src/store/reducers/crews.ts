@@ -3,7 +3,7 @@ import { Reducer } from "redux";
 import { ECrewsTypes, ICrewsState } from "../../types/store/crews";
 
 export const crews: Reducer<ICrewsState> = (
-  state = { loading: false, error: "", data: [] },
+  state = { loading: false, error: "", select_crew: null, data: [] },
   action
 ) => {
   switch (action.type) {
@@ -26,6 +26,13 @@ export const crews: Reducer<ICrewsState> = (
         ...state,
         loading: false,
         error: action.payload
+      };
+    }
+
+    case ECrewsTypes.SELECT_CREW: {
+      return {
+        ...state,
+        select_crew: action.payload
       };
     }
 

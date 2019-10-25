@@ -1,7 +1,8 @@
 export enum ECrewsTypes {
   GET_CREWS_REQUEST = "GET_CREWS_REQUEST",
   GET_CREWS_SUCCESS = "GET_CREWS_SUCCESS",
-  GET_CREWS_FAILURE = "GET_CREWS_FAILURE"
+  GET_CREWS_FAILURE = "GET_CREWS_FAILURE",
+  SELECT_CREW = "SELECT_CREW"
 }
 
 export interface ICrew {
@@ -21,4 +22,5 @@ export interface ICrewsState {
   loading: boolean;
   error: string;
   data: Array<ICrew>;
+  select_crew: number | null;
 }
