@@ -2,10 +2,15 @@ import React, { useState } from "react";
 import { YMaps, Map, Placemark, ZoomControl } from "react-yandex-maps";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getCrewsRequest } from "../../store/actions/crews";
+import { getCrewsRequest, selectCrew } from "../../store/actions/crews";
 import { StoreType } from "../../store";
 import { ICrew } from "../../types/store/crews";
-import { CoordsType, GetCoordsType, GetAddressType } from "../../types/ymaps";
+import {
+  CoordsType,
+  GetCoordsType,
+  GetAddressType,
+  GetPlaceMarkId
+} from "../../types/ymaps";
 import { setLocation } from "../../store/actions/location";
 
 export default () => {
@@ -68,15 +73,24 @@ export default () => {
         )}
         {crews.length !== 0 &&
           !locationNotFound &&
-          crews.map(crew => (
-            <Placemark
-              key={crew.crew_id}
-              geometry={[crew.lat, crew.lon]}
-              options={{
-                preset: "islands#greenStretchyIcon"
-              }}
-            />
-          ))}
+          crews.map(crew => {
+            const { crew_id, lat, lon } = crew;
+            return (
+              <Placemark
+                key={crew_id}
+                geometry={[lat, lon]}
+                options={{
+                  preset: "islands#greenStretchyIcon"
+                }}
+                properties={{
+                  id: crew_id
+                }}
+                onClick={(event: GetPlaceMarkId) =>
+                  dispatch(selectCrew(event.get("target").properties.get("id")))
+                }
+              />
+            );
+          })}
 
         <ZoomControl options={{ float: "right" }} />
       </Map>
