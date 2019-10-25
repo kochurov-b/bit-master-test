@@ -1,9 +1,10 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { StoreType } from "../../store";
 import { ICrew } from "../../types/store/crews";
 import Crew from "./Crew";
+import { selectCrew } from "../../store/actions/crews";
 
 import "./styles.css";
 
@@ -12,10 +13,10 @@ export default () => {
   const locationNotFound = useSelector<StoreType, boolean>(
     state => state.location.notFound
   );
-
-  const selectCrew = useSelector<StoreType, number | null>(
+  const selectedCrew = useSelector<StoreType, number | null>(
     state => state.crews.select_crew
   );
+  const dispatch = useDispatch();
 
   return (
     <div className="crews">
@@ -27,11 +28,12 @@ export default () => {
             return (
               <li key={crew_id.toString()} className="crew__item">
                 <Crew
-                  className={selectCrew === crew_id ? "_selected-crew" : ""}
+                  className={selectedCrew === crew_id ? "_selected-crew" : ""}
                   mark={car_mark}
                   model={car_model}
                   color={car_color}
                   distance={distance}
+                  onClick={() => dispatch(selectCrew(crew_id))}
                 />
               </li>
             );
