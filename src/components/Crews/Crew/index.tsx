@@ -1,14 +1,8 @@
 import React from "react";
 
-import "./styles.css";
+import { IPropsCrew } from "../../../types/crews";
 
-interface IPropsCrew {
-  mark: string;
-  model: string;
-  color: string;
-  distance: number;
-  className: string;
-}
+import "./styles.css";
 
 export default ({ mark, model, color, distance, className }: IPropsCrew) => (
   <div className={`crew ${className && className}`}>
