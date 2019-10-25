@@ -17,7 +17,8 @@ export const crews: Reducer<ICrewsState> = (
       return {
         ...state,
         loading: false,
-        data: action.payload
+        data: action.payload,
+        select_crew: action.payload[0].crew_id
       };
     }
 
