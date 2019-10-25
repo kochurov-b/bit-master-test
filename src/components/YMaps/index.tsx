@@ -50,7 +50,7 @@ export default () => {
       <Map
         onClick={(event: GetCoordsType) => setCoords(event.get("coords"))}
         defaultState={{ center: [56.84976, 53.20448], zoom: 13 }}
-        width={700}
+        width={750}
         height={450}
       >
         {coords.length !== 0 && (
