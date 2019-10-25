@@ -22,7 +22,7 @@ export default () => {
     <div className="crews">
       {crews.length !== 0 && !locationNotFound ? (
         <ul className="crews__list">
-          {crews.map(crew => {
+          {crews.map((crew, index) => {
             const { crew_id, car_mark, car_model, car_color, distance } = crew;
             return (
               <li key={crew_id.toString()} className="crews__item">
@@ -32,6 +32,7 @@ export default () => {
                   model={car_model}
                   color={car_color}
                   distance={distance}
+                  tabIndex={index + 1}
                   onClick={() => dispatch(selectCrew(crew_id))}
                 />
               </li>

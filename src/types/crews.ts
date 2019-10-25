@@ -4,5 +4,6 @@ export interface IPropsCrew {
   color: string;
   distance: number;
   className: string;
+  tabIndex: number;
   onClick: () => void;
 }
