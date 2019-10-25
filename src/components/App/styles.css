@@ -1,6 +1,10 @@
 .app {
   width: 1200px;
-  margin: 0 auto;
+  margin: 100px auto;
+}
+
+.app__header {
+  margin-bottom: 50px;
 }
 
 .app__content {
