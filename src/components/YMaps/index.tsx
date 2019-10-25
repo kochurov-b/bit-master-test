@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getCrewsRequest, selectCrew } from "../../store/actions/crews";
 import { StoreType } from "../../store";
-import { ICrew } from "../../types/store/crews";
+import { ICrewsState } from "../../types/store/crews";
 import {
   CoordsType,
   GetCoordsType,
@@ -15,7 +15,9 @@ import { setLocation } from "../../store/actions/location";
 
 export default () => {
   const [coords, setCoords] = useState<CoordsType | []>([]);
-  const crews = useSelector<StoreType, Array<ICrew>>(state => state.crews.data);
+  const { data, select_crew } = useSelector<StoreType, ICrewsState>(
+    state => state.crews
+  );
   const locationNotFound = useSelector<StoreType, boolean>(
     state => state.location.notFound
   );
@@ -71,19 +73,21 @@ export default () => {
             modules={["geocode"]}
           />
         )}
-        {crews.length !== 0 &&
+        {data.length !== 0 &&
           !locationNotFound &&
-          crews.map(crew => {
-            const { crew_id, lat, lon } = crew;
+          data.map(crew => {
+            const { crew_id, car_mark, car_model, lat, lon } = crew;
             return (
               <Placemark
                 key={crew_id}
                 geometry={[lat, lon]}
-                options={{
-                  preset: "islands#greenStretchyIcon"
-                }}
                 properties={{
+                  iconCaption:
+                    crew_id === select_crew && `${car_mark} ${car_model}`,
                   id: crew_id
+                }}
+                options={{
+                  iconColor: "#00d600"
                 }}
                 onClick={(event: GetPlaceMarkIdType) =>
                   dispatch(selectCrew(event.get("target").properties.get("id")))
