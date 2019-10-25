@@ -20,13 +20,12 @@ export default () => {
 
   return (
     <div className="crews">
-      <ul className="crews__list">
-        {crews.length !== 0 &&
-          !locationNotFound &&
-          crews.map(crew => {
+      {crews.length !== 0 && !locationNotFound ? (
+        <ul className="crews__list">
+          {crews.map(crew => {
             const { crew_id, car_mark, car_model, car_color, distance } = crew;
             return (
-              <li key={crew_id.toString()} className="crew__item">
+              <li key={crew_id.toString()} className="crews__item">
                 <Crew
                   className={selectedCrew === crew_id ? "_selected-crew" : ""}
                   mark={car_mark}
@@ -38,7 +37,15 @@ export default () => {
               </li>
             );
           })}
-      </ul>
+        </ul>
+      ) : crews.length === 0 && !locationNotFound ? (
+        <span className="crews__prompt">
+          Выберите место на карте или заполните поле "Откуда", чтобы увидеть
+          подходящие автомобили!
+        </span>
+      ) : (
+        <span className="crews__prompt">Нет подходящих автомобилей</span>
+      )}
     </div>
   );
 };
