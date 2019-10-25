@@ -3,7 +3,25 @@
   margin: 0 auto;
 }
 
+.app__content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .app__ymaps {
   width: 700px;
   height: 450px;
+  flex: 0 0 auto;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.app__crews {
+  width: 100%;
+  margin-left: 50px;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 5px;
+  padding: 20px;
 }
