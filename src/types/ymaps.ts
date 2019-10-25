@@ -18,3 +18,6 @@ export type GetAddressType = {
     ) => void;
   };
 };
+export type GetPlaceMarkIdType = {
+  get: (arg0: string) => { properties: { get: (arg0: string) => number } };
+};

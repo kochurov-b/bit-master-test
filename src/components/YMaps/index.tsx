@@ -9,7 +9,7 @@ import {
   CoordsType,
   GetCoordsType,
   GetAddressType,
-  GetPlaceMarkId
+  GetPlaceMarkIdType
 } from "../../types/ymaps";
 import { setLocation } from "../../store/actions/location";
 
@@ -85,7 +85,7 @@ export default () => {
                 properties={{
                   id: crew_id
                 }}
-                onClick={(event: GetPlaceMarkId) =>
+                onClick={(event: GetPlaceMarkIdType) =>
                   dispatch(selectCrew(event.get("target").properties.get("id")))
                 }
               />
