@@ -10,7 +10,9 @@ function* workerGetCrews() {
       data: { crews_info }
     } = responseCrews;
 
-    yield put(getCrewsSuccess(crews_info));
+    yield put(
+      getCrewsSuccess(crews_info.sort((a, b) => a.distance - b.distance))
+    );
   } catch (error) {
     yield put(getCrewsFailure());
   }
