@@ -6,11 +6,14 @@ import { getCrewsRequest } from "../../store/actions/crews";
 import { StoreType } from "../../store";
 import { ICrew } from "../../types/store/crews";
 import { CoordsType, GetCoordsType, GetAddressType } from "../../types/ymaps";
+import { setLocation } from "../../store/actions/location";
 
 export default () => {
   const [coords, setCoords] = useState<CoordsType | []>([]);
-  const [notFound, setNotFound] = useState<string>("");
   const crews = useSelector<StoreType, Array<ICrew>>(state => state.crews.data);
+  const locationNotFound = useSelector<StoreType, boolean>(
+    state => state.location.notFound
+  );
   const dispatch = useDispatch();
 
   const handleGetCoords = (event: GetCoordsType) => {
@@ -27,10 +30,10 @@ export default () => {
       ];
 
       if (typeof address[0] !== "undefined") {
+        dispatch(setLocation(coords, false));
         dispatch(getCrewsRequest(coords));
-        setNotFound("");
       } else {
-        setNotFound("Адрес не найден!");
+        dispatch(setLocation(coords, true));
       }
     });
   };
@@ -52,10 +55,10 @@ export default () => {
             key={coords.join(",")}
             geometry={coords}
             properties={{
-              iconCaption: notFound
+              iconCaption: locationNotFound && "Адрес не найден!"
             }}
             options={{
-              iconColor: !notFound ? "#ffbe3e" : "#ff3e3e"
+              iconColor: !locationNotFound ? "#ffbe3e" : "#ff3e3e"
             }}
             onLoad={(placeMark: GetAddressType) =>
               handleGetAddress(placeMark, coords)
@@ -63,9 +66,8 @@ export default () => {
             modules={["geocode"]}
           />
         )}
-
         {crews.length !== 0 &&
-          !notFound &&
+          !locationNotFound &&
           crews.map(crew => (
             <Placemark
               key={crew.crew_id}
