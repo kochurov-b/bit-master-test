@@ -23,10 +23,6 @@ export default () => {
   );
   const dispatch = useDispatch();
 
-  const handleGetCoords = (event: GetCoordsType) => {
-    setCoords(event.get("coords"));
-  };
-
   const handleGetAddress = (placeMark: GetAddressType, coords: CoordsType) => {
     placeMark.geocode(coords).then(result => {
       const firstGeoObject = result.geoObjects.get(0);
@@ -52,7 +48,7 @@ export default () => {
       }}
     >
       <Map
-        onClick={(event: GetCoordsType) => handleGetCoords(event)}
+        onClick={(event: GetCoordsType) => setCoords(event.get("coords"))}
         defaultState={{ center: [56.84976, 53.20448], zoom: 13 }}
         width={700}
         height={450}
