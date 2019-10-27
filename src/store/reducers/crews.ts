@@ -3,7 +3,13 @@ import { Reducer } from "redux";
 import { ECrewsTypes, ICrewsState } from "../../types/store/crews";
 
 export const crews: Reducer<ICrewsState> = (
-  state = { loading: false, error: "", select_crew: null, data: [] },
+  state = {
+    loading: false,
+    error: "",
+    select_crew: null,
+    not_found: false,
+    data: []
+  },
   action
 ) => {
   switch (action.type) {
@@ -18,7 +24,8 @@ export const crews: Reducer<ICrewsState> = (
         ...state,
         loading: false,
         data: action.payload,
-        select_crew: action.payload[0].crew_id
+        select_crew: action.payload[0].crew_id,
+        not_found: false
       };
     }
 
@@ -34,6 +41,15 @@ export const crews: Reducer<ICrewsState> = (
       return {
         ...state,
         select_crew: action.payload
+      };
+    }
+
+    case ECrewsTypes.CLEAR_CREWS: {
+      return {
+        ...state,
+        select_crew: null,
+        not_found: true,
+        data: []
       };
     }
 

@@ -11,3 +11,5 @@ export const getCrewsSuccess = (data: Array<ICrew>) =>
 export const getCrewsFailure = () => action(ECrewsTypes.GET_CREWS_FAILURE);
 
 export const selectCrew = (id: number) => action(ECrewsTypes.SELECT_CREW, id);
+
+export const clearCrews = () => action(ECrewsTypes.CLEAR_CREWS);
