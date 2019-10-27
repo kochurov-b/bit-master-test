@@ -10,6 +10,9 @@ export type GetAddressType = {
           get: (
             arg0: number
           ) => {
+            properties: {
+              get: (parameter: string) => Array<CoordsType>;
+            };
             getThoroughfare: () => string;
             getPremiseNumber: () => string;
           };
