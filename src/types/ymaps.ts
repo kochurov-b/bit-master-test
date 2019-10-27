@@ -21,3 +21,15 @@ export type GetAddressType = {
 export type GetPlaceMarkIdType = {
   get: (arg0: string) => { properties: { get: (arg0: string) => number } };
 };
+export type InstancePlaceMarkType = {
+  geometry: {
+    setCoordinates: (coords: CoordsType) => void;
+  };
+  getMap: () => {
+    container: {
+      getSize: () => [number, number];
+    };
+    setCenter: (center: CoordsType, zoom: number) => void;
+    getCenter: () => CoordsType;
+  };
+};
