@@ -108,15 +108,16 @@ export default () => {
         )}
         {data.length !== 0 &&
           data.map(crew => {
-            const { crew_id, car_mark, car_model, lat, lon } = crew;
+            const { crew_id, car_mark, car_model, lat, lon, distance } = crew;
             return (
               <Placemark
                 key={crew_id}
                 geometry={[lat, lon]}
                 properties={{
+                  id: crew_id,
+                  hintContent: `${car_mark} ${car_model}, ${distance}м`,
                   iconCaption:
-                    crew_id === select_crew && `${car_mark} ${car_model}`,
-                  id: crew_id
+                    crew_id === select_crew && `${car_mark} ${car_model}`
                 }}
                 options={{
                   iconColor: "#00d600"
@@ -124,6 +125,7 @@ export default () => {
                 onClick={(event: GetPlaceMarkIdType) =>
                   dispatch(selectCrew(event.get("target").properties.get("id")))
                 }
+                modules={["geoObject.addon.hint"]}
               />
             );
           })}
