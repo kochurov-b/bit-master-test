@@ -24,7 +24,15 @@ export type GetAddressType = {
 export type GetPlaceMarkIdType = {
   get: (arg0: string) => { properties: { get: (arg0: string) => number } };
 };
+
+interface IPropertiesSet {
+  iconCaption: string;
+}
+
 export type InstancePlaceMarkType = {
+  properties: {
+    set: ({ iconCaption }: IPropertiesSet) => void;
+  };
   geometry: {
     setCoordinates: (coords: CoordsType) => void;
   };
