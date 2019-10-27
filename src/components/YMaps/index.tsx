@@ -19,6 +19,7 @@ import {
 } from "../../types/ymaps";
 import { setLocation, updateAddress } from "../../store/actions/location";
 import { ILocationState } from "../../types/store/location";
+import { config } from "../../config";
 
 export default () => {
   const { data, select_crew, not_found } = useSelector<StoreType, ICrewsState>(
@@ -80,7 +81,7 @@ export default () => {
   return (
     <YMaps
       query={{
-        apikey: "f1e5e6c7-a738-4d2b-b815-9afd5b41f76d",
+        apikey: config.apiKey,
         load: "util.bounds"
       }}
     >
