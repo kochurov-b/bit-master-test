@@ -12,7 +12,6 @@ import { ICrewsState } from "../../types/store/crews";
 import {
   CoordsType,
   GetCoordsType,
-  GetAddressType,
   GetPlaceMarkIdType,
   InstancePlaceMarkType,
   IGetCoordinates
