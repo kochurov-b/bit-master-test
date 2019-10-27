@@ -26,6 +26,7 @@ export default () => {
   useEffect(() => setInputValue(address), [address]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // в идеале подключить debounce
     const value = event.currentTarget.value.trim();
     value && dispatch(updateAddress(value));
 
