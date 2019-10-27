@@ -8,11 +8,15 @@ export const location: Reducer<ILocationState> = (
 ) => {
   switch (action.type) {
     case ELocationTypes.SET_LOCATION:
-      const { coords, address } = action.payload;
       return {
         ...state,
-        coords,
-        address
+        coords: action.payload
+      };
+
+    case ELocationTypes.UPDATE_ADDRESS:
+      return {
+        ...state,
+        address: action.payload
       };
 
     default:

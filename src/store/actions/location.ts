@@ -8,8 +8,8 @@ export interface ISetLocationArgsType {
   address?: string;
 }
 
-export const setLocation = ({ coords, address }: ISetLocationArgsType) =>
-  action(ELocationTypes.SET_LOCATION, {
-    coords,
-    address
-  });
+export const setLocation = (coords: CoordsType | string) =>
+  action(ELocationTypes.SET_LOCATION, coords);
+
+export const updateAddress = (address: string) =>
+  action(ELocationTypes.UPDATE_ADDRESS, address);
