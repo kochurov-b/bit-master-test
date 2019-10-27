@@ -6,5 +6,5 @@ export enum ELocationTypes {
 
 export interface ILocationState {
   coords: CoordsType | [];
-  notFound: boolean;
+  address: string;
 }
