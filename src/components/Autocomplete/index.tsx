@@ -66,13 +66,12 @@ export default () => {
           value={inputValue}
         />
       </div>
-
-      <Suggestions
-        inputValue={inputValue}
-        showSuggestions={showSuggestions}
-        filteredSuggestions={filteredSuggestions}
-        onClick={(event: MouseEvent<HTMLElement>) => handleClick(event)}
-      />
+      {showSuggestions && inputValue && (
+        <Suggestions
+          filteredSuggestions={filteredSuggestions}
+          onClick={(event: MouseEvent<HTMLElement>) => handleClick(event)}
+        />
+      )}
     </div>
   );
 };
