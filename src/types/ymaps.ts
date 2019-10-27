@@ -1,6 +1,10 @@
 export type CoordsType = [number, number];
-export type GetCoordsType = { get: (arg0: string) => CoordsType };
-export type GetAddressType = {
+
+export interface GetCoordsType {
+  get: (arg0: string) => CoordsType;
+}
+
+export interface GetAddressType {
   geocode: (
     arg0: number[]
   ) => {
@@ -20,16 +24,17 @@ export type GetAddressType = {
       }) => void
     ) => void;
   };
-};
-export type GetPlaceMarkIdType = {
+}
+
+export interface GetPlaceMarkIdType {
   get: (arg0: string) => { properties: { get: (arg0: string) => number } };
-};
+}
 
 interface IPropertiesSet {
   iconCaption: string;
 }
 
-export type InstancePlaceMarkType = {
+export interface InstancePlaceMarkType {
   properties: {
     set: ({ iconCaption }: IPropertiesSet) => void;
   };
@@ -43,7 +48,7 @@ export type InstancePlaceMarkType = {
     setCenter: (center: CoordsType, zoom: number) => void;
     getCenter: () => CoordsType;
   };
-};
+}
 
 export interface IGetCoordinates {
   get: (arg0: string) => { geometry: { getCoordinates: () => CoordsType } };
