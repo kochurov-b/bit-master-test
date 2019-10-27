@@ -1,17 +1,23 @@
 import React, { useState, MouseEvent } from "react";
+import { useDispatch } from "react-redux";
 
 import Suggestions from "./Suggestions";
+import { setLocation } from "../../store/actions/location";
 
 import "./styles.css";
 
 export default () => {
-  const suggestions: Array<string> = ["Октяб", "Дыр"];
+  const suggestions: Array<string> = [
+    "улица 10 лет Октября, 17А",
+    "улица Кирова, 115"
+  ];
 
   const [inputValue, setInputValue] = useState<string>("");
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState<Array<string>>(
     []
   );
+  const dispatch = useDispatch();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
@@ -27,9 +33,15 @@ export default () => {
   };
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
+    const value = event.currentTarget.innerText;
+    dispatch(
+      setLocation({
+        coords: `Россия, Россия, Удмуртская Республика, Ижевск, Россия, Россия, Удмуртская Республика, Ижевск, улица 10 лет Октября, 17А`
+      })
+    );
     setFilteredSuggestions([]);
     setShowSuggestions(false);
-    setInputValue(event.currentTarget.innerText);
+    setInputValue(value);
   };
 
   return (
