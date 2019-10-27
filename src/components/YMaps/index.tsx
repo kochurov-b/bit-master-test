@@ -16,14 +16,14 @@ import {
   GetPlaceMarkIdType,
   InstancePlaceMarkType
 } from "../../types/ymaps";
-import { setLocation } from "../../store/actions/location";
+import { setLocation, updateAddress } from "../../store/actions/location";
 import { ILocationState } from "../../types/store/location";
 
 export default () => {
   const { data, select_crew, not_found } = useSelector<StoreType, ICrewsState>(
     state => state.crews
   );
-  const { coords, address } = useSelector<StoreType, ILocationState>(
+  const { coords } = useSelector<StoreType, ILocationState>(
     state => state.location
   );
   const dispatch = useDispatch();
@@ -54,6 +54,7 @@ export default () => {
         ];
 
         if (typeof address[0] !== "undefined") {
+          dispatch(updateAddress(address.join(", ")));
           dispatch(getCrewsRequest(coords));
         } else {
           instancePlaceMark.current &&
@@ -78,7 +79,7 @@ export default () => {
         width={750}
         height={450}
         onClick={(event: GetCoordsType) =>
-          dispatch(setLocation({ coords: event.get("coords") }))
+          dispatch(setLocation(event.get("coords")))
         }
         onLoad={ymapsInstance => (instanceYmaps.current = ymapsInstance)}
       >
@@ -90,7 +91,7 @@ export default () => {
               iconColor: !not_found ? "#ffbe3e" : "#ff3e3e"
             }}
             onLoad={(placeMark: GetAddressType) =>
-              !address && handleGetAddress(placeMark, coords)
+              handleGetAddress(placeMark, coords)
             }
             instanceRef={instancePlaceMark}
             modules={["geocode"]}
