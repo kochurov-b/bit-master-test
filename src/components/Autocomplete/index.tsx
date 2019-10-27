@@ -1,8 +1,9 @@
-import React, { useState, MouseEvent } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect, MouseEvent } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import Suggestions from "./Suggestions";
-import { setLocation } from "../../store/actions/location";
+import { setLocation, updateAddress } from "../../store/actions/location";
+import { StoreType } from "../../store";
 
 import "./styles.css";
 
@@ -11,16 +12,21 @@ export default () => {
     "улица 10 лет Октября, 17А",
     "улица Кирова, 115"
   ];
-
-  const [inputValue, setInputValue] = useState<string>("");
+  const address = useSelector<StoreType, string>(
+    state => state.location.address
+  );
+  const [inputValue, setInputValue] = useState<string>(address);
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState<Array<string>>(
     []
   );
   const dispatch = useDispatch();
 
+  useEffect(() => setInputValue(address), [address]);
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
+    dispatch(updateAddress(value));
 
     const filteredSuggestions: Array<string> = suggestions.filter(
       (suggestion: string) =>
@@ -35,9 +41,9 @@ export default () => {
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     const value = event.currentTarget.innerText;
     dispatch(
-      setLocation({
-        coords: `Россия, Россия, Удмуртская Республика, Ижевск, Россия, Россия, Удмуртская Республика, Ижевск, улица 10 лет Октября, 17А`
-      })
+      setLocation(
+        `Россия, Россия, Удмуртская Республика, Ижевск, Россия, Россия, Удмуртская Республика, Ижевск, улица 10 лет Октября, 17А`
+      )
     );
     setFilteredSuggestions([]);
     setShowSuggestions(false);
