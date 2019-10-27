@@ -30,6 +30,25 @@ export default () => {
   const instanceYmaps = useRef<any>();
   const instancePlaceMark = useRef<InstancePlaceMarkType>();
 
+  const checkValidAddress = (address: Array<string>, coords: CoordsType) => {
+    const placeMark = instancePlaceMark.current;
+    if (placeMark) {
+      if (
+        typeof address[0] === "undefined" ||
+        typeof address[1] === "undefined"
+      ) {
+        placeMark.properties.set({
+          iconCaption: "Адрес не найден!"
+        });
+        dispatch(updateAddress(""));
+        dispatch(clearCrews());
+      } else {
+        dispatch(updateAddress(address.join(", ")));
+        dispatch(getCrewsRequest(coords));
+      }
+    }
+  };
+
   const handleGetAddress = (placeMark: GetAddressType, coords: CoordsType) => {
     placeMark.geocode(coords).then(result => {
       const firstGeoObject = result.geoObjects.get(0);
@@ -52,17 +71,7 @@ export default () => {
           firstGeoObject.getThoroughfare(),
           firstGeoObject.getPremiseNumber()
         ];
-
-        if (typeof address[0] !== "undefined") {
-          dispatch(updateAddress(address.join(", ")));
-          dispatch(getCrewsRequest(coords));
-        } else {
-          instancePlaceMark.current &&
-            instancePlaceMark.current.properties.set({
-              iconCaption: "Адрес не найден!"
-            });
-          dispatch(clearCrews());
-        }
+        checkValidAddress(address, coords);
       }
     });
   };
