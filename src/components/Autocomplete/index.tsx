@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Suggestions from "./Suggestions";
 import { setLocation, updateAddress } from "../../store/actions/location";
 import { StoreType } from "../../store";
+import { config } from "../../config";
 
 import "./styles.css";
 
@@ -42,11 +43,7 @@ export default () => {
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     const value = event.currentTarget.innerText;
-    dispatch(
-      setLocation(
-        `Россия, Россия, Удмуртская Республика, Ижевск, Россия, Россия, Удмуртская Республика, Ижевск, улица 10 лет Октября, 17А`
-      )
-    );
+    dispatch(setLocation(`${config.locationCity} улица 10 лет Октября, 17А`));
     setActiveSuggestion(0);
     setFilteredSuggestions([]);
     setShowSuggestions(false);
@@ -60,9 +57,7 @@ export default () => {
       if (filteredSuggestions.length) {
         setInputValue(filteredSuggestions[activeSuggestion]);
         dispatch(
-          setLocation(
-            `Россия, Россия, Удмуртская Республика, Ижевск, Россия, Россия, Удмуртская Республика, Ижевск, улица 10 лет Октября, 17А`
-          )
+          setLocation(`${config.locationCity} улица 10 лет Октября, 17А`)
         );
       }
     } else if (event.keyCode === 38) {
