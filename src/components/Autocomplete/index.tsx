@@ -5,14 +5,11 @@ import Suggestions from "./Suggestions";
 import { setLocation, updateAddress } from "../../store/actions/location";
 import { StoreType } from "../../store";
 import { config } from "../../config";
+import { addresses } from "../../streets.json";
 
 import "./styles.css";
 
 export default () => {
-  const suggestions: Array<string> = [
-    "улица 10 лет Октября, 17А",
-    "улица Кирова, 115"
-  ];
   const address = useSelector<StoreType, string>(
     state => state.location.address
   );
@@ -23,18 +20,23 @@ export default () => {
     []
   );
   const dispatch = useDispatch();
-
   useEffect(() => setInputValue(address), [address]);
 
+  interface ISuggestion {
+    address: string;
+    lat: number;
+    lon: number;
+  }
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // в идеале подключить debounce
+    // в идеале сделать через saga debounce, а лучше без redux, использовать rxjs
+
     const value = event.currentTarget.value.trim();
     value && dispatch(updateAddress(value));
 
-    const filteredSuggestions: Array<string> = suggestions.filter(
-      (suggestion: string) =>
-        suggestion.toLowerCase().indexOf(value.toLowerCase()) > -1
-    );
+    const filteredSuggestions: Array<string> = addresses
+      .map((suggestion: ISuggestion) => suggestion.address)
+      .filter(item => item.toLowerCase().indexOf(value.toLowerCase()) > -1);
 
     setFilteredSuggestions(filteredSuggestions);
     setShowSuggestions(true);
@@ -43,7 +45,7 @@ export default () => {
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     const value = event.currentTarget.innerText;
-    dispatch(setLocation(`${config.locationCity} улица 10 лет Октября, 17А`));
+    dispatch(setLocation(`${config.locationCity} ${value}`));
     setActiveSuggestion(0);
     setFilteredSuggestions([]);
     setShowSuggestions(false);
@@ -57,7 +59,9 @@ export default () => {
       if (filteredSuggestions.length) {
         setInputValue(filteredSuggestions[activeSuggestion]);
         dispatch(
-          setLocation(`${config.locationCity} улица 10 лет Октября, 17А`)
+          setLocation(
+            `${config.locationCity} ${filteredSuggestions[activeSuggestion]}`
+          )
         );
       }
     } else if (event.keyCode === 38) {
