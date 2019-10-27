@@ -44,3 +44,7 @@ export type InstancePlaceMarkType = {
     getCenter: () => CoordsType;
   };
 };
+
+export interface IGetCoordinates {
+  get: (arg0: string) => { geometry: { getCoordinates: () => CoordsType } };
+}

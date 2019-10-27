@@ -14,7 +14,8 @@ import {
   GetCoordsType,
   GetAddressType,
   GetPlaceMarkIdType,
-  InstancePlaceMarkType
+  InstancePlaceMarkType,
+  IGetCoordinates
 } from "../../types/ymaps";
 import { setLocation, updateAddress } from "../../store/actions/location";
 import { ILocationState } from "../../types/store/location";
@@ -49,8 +50,8 @@ export default () => {
     }
   };
 
-  const handleGetAddress = (placeMark: GetAddressType, coords: CoordsType) => {
-    placeMark.geocode(coords).then(result => {
+  const handleGetAddress = (coords: CoordsType) => {
+    instanceYmaps.current.geocode(coords).then((result: any) => {
       const firstGeoObject = result.geoObjects.get(0);
 
       if (instancePlaceMark.current && typeof coords === "string") {
@@ -97,11 +98,13 @@ export default () => {
             key={typeof coords !== "string" ? coords.join(",") : coords}
             geometry={typeof coords !== "string" ? coords : undefined}
             options={{
-              iconColor: !not_found ? "#ffbe3e" : "#ff3e3e"
+              iconColor: !not_found ? "#ffbe3e" : "#ff3e3e",
+              draggable: true
             }}
-            onLoad={(placeMark: GetAddressType) =>
-              handleGetAddress(placeMark, coords)
-            }
+            onDragEnd={(event: IGetCoordinates) => {
+              handleGetAddress(event.get("target").geometry.getCoordinates());
+            }}
+            onLoad={() => handleGetAddress(coords)}
             instanceRef={instancePlaceMark}
             modules={["geocode"]}
           />
