@@ -18,7 +18,8 @@
   cursor: pointer;
 }
 
-.suggestions__item:hover {
+.suggestions__item:hover,
+._active-suggestion {
   background-color: rgb(254, 255, 218);
 }
 

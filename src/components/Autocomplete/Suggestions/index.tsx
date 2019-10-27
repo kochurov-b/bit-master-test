@@ -4,12 +4,21 @@ import { IPropsSuggestions } from "../../../types/suggestions";
 
 import "./styles.css";
 
-export default ({ filteredSuggestions, onClick }: IPropsSuggestions) => (
+export default ({
+  activeSuggestion,
+  filteredSuggestions,
+  onClick
+}: IPropsSuggestions) => (
   <div className="suggestions">
     {filteredSuggestions.length ? (
       <ul className="suggestions__list">
-        {filteredSuggestions.map((suggestion: string) => (
-          <li key={suggestion} className="suggestions__item" onClick={onClick}>
+        {filteredSuggestions.map((suggestion: string, index: number) => (
+          <li
+            key={suggestion}
+            className={`suggestions__item ${activeSuggestion === index &&
+              "_active-suggestion"}`}
+            onClick={onClick}
+          >
             {suggestion}
           </li>
         ))}

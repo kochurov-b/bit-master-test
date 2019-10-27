@@ -17,6 +17,7 @@ export default () => {
   );
   const [inputValue, setInputValue] = useState<string>(address);
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
+  const [activeSuggestion, setActiveSuggestion] = useState<number>(0);
   const [filteredSuggestions, setFilteredSuggestions] = useState<Array<string>>(
     []
   );
@@ -25,8 +26,8 @@ export default () => {
   useEffect(() => setInputValue(address), [address]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value;
-    dispatch(updateAddress(value));
+    const value = event.currentTarget.value.trim();
+    value && dispatch(updateAddress(value));
 
     const filteredSuggestions: Array<string> = suggestions.filter(
       (suggestion: string) =>
@@ -45,9 +46,35 @@ export default () => {
         `Россия, Россия, Удмуртская Республика, Ижевск, Россия, Россия, Удмуртская Республика, Ижевск, улица 10 лет Октября, 17А`
       )
     );
+    setActiveSuggestion(0);
     setFilteredSuggestions([]);
     setShowSuggestions(false);
     setInputValue(value);
+  };
+
+  const handleKeyDown = (event: { keyCode: number }) => {
+    if (event.keyCode === 13) {
+      setActiveSuggestion(0);
+      setShowSuggestions(false);
+      if (filteredSuggestions.length) {
+        setInputValue(filteredSuggestions[activeSuggestion]);
+        dispatch(
+          setLocation(
+            `Россия, Россия, Удмуртская Республика, Ижевск, Россия, Россия, Удмуртская Республика, Ижевск, улица 10 лет Октября, 17А`
+          )
+        );
+      }
+    } else if (event.keyCode === 38) {
+      if (activeSuggestion === 0) {
+        return;
+      }
+      setActiveSuggestion(activeSuggestion - 1);
+    } else if (event.keyCode === 40) {
+      if (activeSuggestion + 1 === filteredSuggestions.length) {
+        return;
+      }
+      setActiveSuggestion(activeSuggestion + 1);
+    }
   };
 
   return (
@@ -63,11 +90,13 @@ export default () => {
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             handleChange(event)
           }
+          onKeyDown={handleKeyDown}
           value={inputValue}
         />
       </div>
       {showSuggestions && inputValue && (
         <Suggestions
+          activeSuggestion={activeSuggestion}
           filteredSuggestions={filteredSuggestions}
           onClick={(event: MouseEvent<HTMLElement>) => handleClick(event)}
         />
