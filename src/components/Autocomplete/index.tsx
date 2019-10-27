@@ -46,6 +46,7 @@ export default () => {
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     const value = event.currentTarget.innerText;
     dispatch(setLocation(`${config.locationCity} ${value}`));
+    dispatch(updateAddress(value));
     setActiveSuggestion(0);
     setFilteredSuggestions([]);
     setShowSuggestions(false);
@@ -63,6 +64,7 @@ export default () => {
             `${config.locationCity} ${filteredSuggestions[activeSuggestion]}`
           )
         );
+        dispatch(updateAddress(filteredSuggestions[activeSuggestion]));
       }
     } else if (event.keyCode === 38) {
       if (activeSuggestion === 0) {
